@@ -50,11 +50,12 @@ const TabNavigator = createBottomTabNavigator({
 
 const SwitchNavigator = createSwitchNavigator(
   {
-    Main: TabNavigator,
+    Main:TabNavigator,
     Login,
     AuthLoading
   },
   {
+    mode:'modal',
     initialRouteName:'AuthLoading'
   })
 
