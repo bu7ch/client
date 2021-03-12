@@ -1,6 +1,6 @@
 import React from 'react';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
+import { ApolloClient } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createHttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
@@ -21,15 +21,15 @@ const authLink = setContext(async (_, {headers}) => {
     },
   }
 })
-const cache = InMemoryCache()
+const cache = new InMemoryCache()
 
 const client = new ApolloClient({
   link: authLink.concat(clink),
-  cache
+  cache,
 })
 
 
-export const App = () => {
+const App = () => {
   return (
     <ApolloProvider client={client}>
       <AppContainer />
@@ -37,3 +37,5 @@ export const App = () => {
   );
 }
 
+
+export default App;

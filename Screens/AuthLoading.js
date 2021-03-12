@@ -17,10 +17,10 @@ color: black;
 
 const AuthLoading = ({ navigation }) => {
   useEffect(() => {
-    AsyncStorage.getItem('token').then(value =>{
+    AsyncStorage.getItem('token').then(value => {
       navigation.navigate(value ? 'Main' : 'Login');
-    })
-  }, [navigation])
+    });
+  }, [navigation]);
   return (
     <AuthLoadingWrapper>
       <AuthLoadingText>Chargement...</AuthLoadingText>
