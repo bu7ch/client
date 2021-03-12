@@ -1,21 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createHttpLink } from 'apollo-link-http'
+import { setContext } from 'apollo-link-context'
+import { ApolloProvider } from '@apollo/react-hooks'
 
-export default function App() {
+import AppContainer from './AppContainer'
+
+const API_URL = '';
+const clink = createHttpLink({
+  uri: API_URL
+})
+const authLink = setContext(async (_, {headers}) => {
+  const token = await AsyncStorage.getItem('token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}`: '',
+    },
+  }
+})
+const cache = InMemoryCache()
+
+const client = new ApolloClient({
+  link: authLink.concat(clink),
+  cache
+})
+
+
+export const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ApolloProvider client={client}>
+      <AppContainer />
+    </ApolloProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
